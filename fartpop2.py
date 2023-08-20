@@ -165,22 +165,9 @@ def Brute(iter):
     print("done")
     
 
+
+
+Playgame()
+
+
 Brute(3)
-
-#Playgame()
-
-
-# threads = []
-
-# for i in range(12):
-# 	print('registering thread')
-# 	threads.append(Thread(target=Brute, args=([20000000000000])))
-
-# for thread in threads:
-# 	thread.start()
-
-# for thread in threads:
-# 	thread.join()
-
-
-
