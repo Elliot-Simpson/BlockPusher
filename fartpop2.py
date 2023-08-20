@@ -133,41 +133,39 @@ def Playgame():
 
     print("Victory")
 
-def Brute(iter):
-    import random
-    tested = 0
-    vic  = 0
-    Bruted_Board = BlockPusher([
-            
-        1,2,3,0,
-        5,6,7,4,
-        9,10,11,8,
-        13,14,15,12
-
-        ])
-
-    
-    for i in range(iter):
-        Bruted_Board.Swap(random.choice(Bruted_Board.ValidMoves()))
-        if vic == 0:
-            print()
-            Bruted_Board.DisplayBoard()
-            tested += 1
-
-        
-        if Bruted_Board.HasWon():
-            vic = 1
-            print("victory")
-            print("tested:",tested)
-            break
-
-
-    print("done")
-    
-
-
-
 Playgame()
 
 
-Brute(3)
+
+# def Brute(iter):
+#     import random
+#     tested = 0
+#     vic  = 0
+#     Bruted_Board = BlockPusher([
+            
+#         1,2,3,0,
+#         5,6,7,4,
+#         9,10,11,8,
+#         13,14,15,12
+
+#         ])
+
+    
+#     for i in range(iter):
+#         Bruted_Board.Swap(random.choice(Bruted_Board.ValidMoves()))
+#         if vic == 0:
+#             print()
+#             Bruted_Board.DisplayBoard()
+#             tested += 1
+
+        
+#         if Bruted_Board.HasWon():
+#             vic = 1
+#             print("victory")
+#             print("tested:",tested)
+#             break
+
+
+#     print("done")
+
+#Brute(3)
