@@ -1,7 +1,7 @@
 class BlockPusher:
 
     def __setitem__(self,key,value):
-        self.PlayBoard[value-1] = value
+        self.PlayBoard[key-1] = value
     
     def __getitem__(self,key):
         return self.PlayBoard[key-1]
@@ -16,6 +16,8 @@ class BlockPusher:
 
         self.width = 4
         self.height = 4
+
+
         if defboard == None:
             self.PlayBoard = [
             1,2,3,4,
@@ -25,6 +27,8 @@ class BlockPusher:
             ]
         else:
             self.PlayBoard = defboard
+    def ZIndex(self):
+        return self.PlayBoard.index(0) +1 
 
     def HasWon(self):
         if self.gameboard == self.PlayBoard:
@@ -33,83 +37,65 @@ class BlockPusher:
             return 0
 
     def Swap(self,swp):
-
         if swp in self.ValidMoves():
-            one = swp - 1
-            two = self.PlayBoard.index(0)
-            self.PlayBoard[one],self.PlayBoard[two] = self.PlayBoard[two],self.PlayBoard[one]
-        # else:
-        #     print("nope",swp,self.PlayBoard.index(0))
-        # sel = sel - 1
-        # match (sel+1)%4:
-        #     case 1:
-        #         # print("ledge")
-        #         self.CheckZero(1,sel)
+            one = swp
+            two = self.ZIndex()
+            self[one],self[two] = self[two],self[one]
 
-        #     case 0:
-        #         # print("redge")
-        #         self.CheckZero(-1,sel)
-
-        #     case _:
-        #         # print("h middle")
-        #         self.CheckZero(-1,sel)
-        #         self.CheckZero(1,sel)
-
-        # match (sel-1)//4+1:  
-
-        #     case 0:
-        #         # print("top")
-        #         self.CheckZero(4,sel)
-        #     case 4:
-        #         # print("bottom")
-        #         self.CheckZero(-4,sel)
-        #     case _:
-        #         # print("v middle")
-        #         self.CheckZero(-4,sel)               
-        #         self.CheckZero(4,sel)
-
-    def ValidMoves(self, pure = 0):
-
+    def ValidMoves(self, ind = 1):
         Valids = []
-        sel = self.PlayBoard.index(0) + 1
-        # print("sel",sel)
+        sel = self.ZIndex()
+
         match (sel)%4:
             case 1:
-                # print("ledge")
+                # Left Edge
                 Valids.append(1+sel)
             case 0:
-                # print("redge")
+                # Right Edge
                 Valids.append(-1+sel)
             case _:
-                # print("medge")
+                # Middle Horizontal
                 Valids.append(-1+sel)
                 Valids.append(1+sel)
 
         match (sel-1)//4:  
 
             case 0:
-                # print("top")
+                # Top Edge
                 Valids.append(4+sel)
             case 3:
-                # print("bottom")
+                # Bottom Edge
                 Valids.append(sel-4)
             case _:
-                # print("middle")
+                # Vertical Middle
                 Valids.append(-4+sel)               
                 Valids.append(4+sel)
-        if pure == 0:
+
+
+        if ind:
             return Valids   
         else:
             VMoves = []
             for i in Valids:
-                VMoves.append(self.PlayBoard[i-1])
+                VMoves.append(self[i])
             return VMoves
 
     def DisplayBoard(self):
-        print(self.PlayBoard[0:4], "\n",
-            self.PlayBoard[4:8], "\n",
-            self.PlayBoard[8:12], "\n",
-            self.PlayBoard[12:16])
+        Blank = " "
+        Seperator = "|"
+        for i in range(self.height):
+            for ii in range(self.width):
+                char = str(self[(i*4)+(ii+1)])
+                print( Blank*(2-len(char)) + char + Seperator   ,end="" )
+                if ii == 3:
+                    print("\n",end="")
+
+        print()
+        
+        # print(self.PlayBoard[0:4], "\n",
+        #     self.PlayBoard[4:8], "\n",
+        #     self.PlayBoard[8:12], "\n",
+        #     self.PlayBoard[12:16])
 
 
 
