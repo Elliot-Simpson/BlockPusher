@@ -17,7 +17,6 @@ class BlockPusher:
         self.width = 4
         self.height = 4
 
-
         if defboard == None:
             self.PlayBoard = [
             1,2,3,4,
@@ -25,6 +24,7 @@ class BlockPusher:
             9,10,11,12,
             13,14,15,0
             ]
+
         else:
             self.PlayBoard = defboard
     def ZIndex(self):
@@ -36,7 +36,10 @@ class BlockPusher:
         else:
             return 0
 
-    def Swap(self,swp):
+    def Swap(self,swp,dir = 0):
+        if dir:
+            dirmap = {"w":-4,"s":4,"a":-1,"d":1}
+            swp = self.ZIndex()+dirmap[swp.lower()]
         if swp in self.ValidMoves():
             one = swp
             two = self.ZIndex()
@@ -71,7 +74,6 @@ class BlockPusher:
                 Valids.append(-4+sel)               
                 Valids.append(4+sel)
 
-
         if ind:
             return Valids   
         else:
@@ -86,6 +88,9 @@ class BlockPusher:
         for i in range(self.height):
             for ii in range(self.width):
                 char = str(self[(i*4)+(ii+1)])
+
+                if char == "0": char = " " 
+                
                 print( Blank*(2-len(char)) + char + Seperator   ,end="" )
                 if ii == 3:
                     print("\n",end="")
@@ -96,8 +101,6 @@ class BlockPusher:
         #     self.PlayBoard[4:8], "\n",
         #     self.PlayBoard[8:12], "\n",
         #     self.PlayBoard[12:16])
-
-
 
 def Playgame():
     board = BlockPusher(
@@ -113,8 +116,15 @@ def Playgame():
     board.DisplayBoard()
     while board.HasWon() == 0:
         print(board.ValidMoves())
-        t = int(input("Move "))
-        board.Swap(t)
+        t = input("Move ")
+        try:
+            t= int(t)
+        except:
+            for tt in t:
+                board.Swap(tt,1)
+        finally:
+            board.Swap(t)
+
         board.DisplayBoard()
 
     print("Victory")
