@@ -106,70 +106,20 @@ class BlockPusher:
         for i in range(self.height):
             for ii in range(self.width):
                 char = str(self[(i*self.width)+(ii+1)])
-
+                maxl = len(str(self.width*self.height))
                 if char == "0": char = " " 
                 
-                print( Blank*(2-len(char)) + char + Seperator   ,end="" )
+                print( Blank*(maxl-len(char)) + char + Seperator   ,end="" )
                 if ii == self.width-1:
                     print("\n",end="")
 
         print()
-        
-        # print(self.PlayBoard[0:4], "\n",
-        #     self.PlayBoard[4:8], "\n",
-        #     self.PlayBoard[8:12], "\n",
-        #     self.PlayBoard[12:16])
 
-# def Playgame():
-#     board = BlockPusher(
-#         [
-            
-#         1,2,3,4,
-#         5,6,7,8,
-#         9,10,11,12,
-#         13,15,14,0
 
-#         ])
-
-#     board.DisplayBoard()
-#     while board.HasWon() == 0:
-#         print(board.ValidMoves())
-#         t = input("Move ")
-#         try:
-#             t= int(t)
-#         except:
-#             for tt in t:
-#                 board.Swap(tt,1)
-#         finally:
-#             board.Swap(t)
-
-#         board.DisplayBoard()
-
-#     print("Victory")
-
-# Playgame()
 
 def Widegame():
-    # board = BlockPusher(
-    #     [
-            
-    #     1,2,3,4,5,
-    #     6,7,8,9,10,
-    #     11,12,13,14,15,
-    #     16,17,18,19,20,
-    #     21,22,24,23,0
-
-    #     ],5,5,[
-            
-    #     1,2,3,4,5,
-    #     6,7,8,9,10,
-    #     11,12,13,14,15,
-    #     16,17,18,19,20,
-    #     21,22,23,24,0
-
-    #     ])
     board = BlockPusher(
-                        wid=5,hei=5,
+                        wid=6,hei=4,
                         defboard="-r"
                         )
     
