@@ -6,40 +6,58 @@ class BlockPusher:
     def __getitem__(self,key):
         return self.PlayBoard[key-1]
 
-    def __init__(self,defboard = None):
-        self.gameboard = [
-        1,2,3,4,
-        5,6,7,8,
-        9,10,11,12,
-        13,14,15,0
-        ]
+    def __init__(self,defboard = None,wid=4,hei=4,winboard=None):
 
-        self.width = 4
-        self.height = 4
+        self.width = wid
+        self.height = hei
+
+
+        if winboard == None:
+            t = [i for i in range(1,self.width*self.height)]
+            t.append(0)
+            self.vicboard = t
+            del t
+        else:
+            self.vicboard = winboard
+
+
 
         if defboard == None:
-            self.PlayBoard = [
-            1,2,3,4,
-            5,6,7,8,
-            9,10,11,12,
-            13,14,15,0
-            ]
-
-        else:
+            t = [i for i in range(1,self.width*self.height)]
+            t.append(0)
+            self.PlayBoard = t
+            del t
+        elif defboard != "-r":
             self.PlayBoard = defboard
+        else:
+            import random
+            t = [i for i in range(1,self.width*self.height)]
+            t.append(0)
+            c1 = random.choice(t)
+            c2 = c1
+            while c2 == c1:
+                c2 = random.choice(t)
+            print(c1)
+            print(c2)
+            self.PlayBoard = t
+            self.PlayBoard[c1],self.PlayBoard[c2] = self.PlayBoard[c2],self.PlayBoard[c1]
+
     def ZIndex(self):
         return self.PlayBoard.index(0) +1 
 
     def HasWon(self):
-        if self.gameboard == self.PlayBoard:
+        if self.vicboard == self.PlayBoard:
             return 1
         else:
             return 0
 
     def Swap(self,swp,dir = 0):
         if dir:
-            dirmap = {"w":-4,"s":4,"a":-1,"d":1}
-            swp = self.ZIndex()+dirmap[swp.lower()]
+            dirmap = {"w":self.width*-1,"s":self.width,"a":-1,"d":1}
+            try:
+                swp = self.ZIndex()+dirmap[swp.lower()]
+            except:
+                pass
         if swp in self.ValidMoves():
             one = swp
             two = self.ZIndex()
@@ -48,8 +66,8 @@ class BlockPusher:
     def ValidMoves(self, ind = 1):
         Valids = []
         sel = self.ZIndex()
-
-        match (sel)%4:
+        self.realwidth = self.width - 1
+        match (sel)%self.width:
             case 1:
                 # Left Edge
                 Valids.append(1+sel)
@@ -61,18 +79,18 @@ class BlockPusher:
                 Valids.append(-1+sel)
                 Valids.append(1+sel)
 
-        match (sel-1)//4:  
+        match (sel-1)//self.width:  
 
             case 0:
                 # Top Edge
-                Valids.append(4+sel)
-            case 3:
+                Valids.append(self.width+sel)
+            case self.realwidth:
                 # Bottom Edge
-                Valids.append(sel-4)
+                Valids.append(sel-self.width)
             case _:
                 # Vertical Middle
-                Valids.append(-4+sel)               
-                Valids.append(4+sel)
+                Valids.append(sel-self.width)               
+                Valids.append(self.width+sel)
 
         if ind:
             return Valids   
@@ -87,12 +105,12 @@ class BlockPusher:
         Seperator = "|"
         for i in range(self.height):
             for ii in range(self.width):
-                char = str(self[(i*4)+(ii+1)])
+                char = str(self[(i*self.width)+(ii+1)])
 
                 if char == "0": char = " " 
                 
                 print( Blank*(2-len(char)) + char + Seperator   ,end="" )
-                if ii == 3:
+                if ii == self.width-1:
                     print("\n",end="")
 
         print()
@@ -102,16 +120,59 @@ class BlockPusher:
         #     self.PlayBoard[8:12], "\n",
         #     self.PlayBoard[12:16])
 
-def Playgame():
-    board = BlockPusher(
-        [
+# def Playgame():
+#     board = BlockPusher(
+#         [
             
-        1,2,3,4,
-        5,6,7,8,
-        9,10,11,12,
-        13,15,14,0
+#         1,2,3,4,
+#         5,6,7,8,
+#         9,10,11,12,
+#         13,15,14,0
 
-        ])
+#         ])
+
+#     board.DisplayBoard()
+#     while board.HasWon() == 0:
+#         print(board.ValidMoves())
+#         t = input("Move ")
+#         try:
+#             t= int(t)
+#         except:
+#             for tt in t:
+#                 board.Swap(tt,1)
+#         finally:
+#             board.Swap(t)
+
+#         board.DisplayBoard()
+
+#     print("Victory")
+
+# Playgame()
+
+def Widegame():
+    # board = BlockPusher(
+    #     [
+            
+    #     1,2,3,4,5,
+    #     6,7,8,9,10,
+    #     11,12,13,14,15,
+    #     16,17,18,19,20,
+    #     21,22,24,23,0
+
+    #     ],5,5,[
+            
+    #     1,2,3,4,5,
+    #     6,7,8,9,10,
+    #     11,12,13,14,15,
+    #     16,17,18,19,20,
+    #     21,22,23,24,0
+
+    #     ])
+    board = BlockPusher(
+                        wid=5,hei=5,
+                        defboard="-r"
+                        )
+    
 
     board.DisplayBoard()
     while board.HasWon() == 0:
@@ -129,9 +190,7 @@ def Playgame():
 
     print("Victory")
 
-Playgame()
-
-
+Widegame()
 
 # def Brute(iter):
 #     import random
