@@ -11,36 +11,47 @@ class BlockPusher:
         self.width = wid
         self.height = hei
 
-
-        if winboard == None:
+        def makeboard():
             t = [i for i in range(1,self.width*self.height)]
             t.append(0)
+            return t
+
+
+        if winboard == None:
+            t = makeboard()
+
             self.vicboard = t
             del t
         else:
             self.vicboard = winboard
 
 
+        t = makeboard() 
+        self.PlayBoard = t
 
-        if defboard == None:
-            t = [i for i in range(1,self.width*self.height)]
-            t.append(0)
-            self.PlayBoard = t
-            del t
-        elif defboard != "-r":
-            self.PlayBoard = defboard
-        else:
+
+        if defboard[0:2] == "-s":
+
             import random
-            t = [i for i in range(1,self.width*self.height)]
-            t.append(0)
-            c1 = random.choice(t)
-            c2 = c1
-            while c2 == c1:
-                c2 = random.choice(t)
-            print(c1)
-            print(c2)
-            self.PlayBoard = t
-            self.PlayBoard[c1],self.PlayBoard[c2] = self.PlayBoard[c2],self.PlayBoard[c1]
+            for i in range(int(defboard[3:])):                                               
+                self.Swap(random.choice(self.ValidMoves()))
+
+#       elif defboard == "-r":
+#           import random
+#           c1 = random.choice(t)
+#           c2 = c1
+#           while c2 == c1:
+#               c2 = random.choice(t)
+#           print(c1)
+#           print(c2)
+#           self.PlayBoard = t
+#           self.PlayBoard[c1],self.PlayBoard[c2] = self.PlayBoard[c2],self.PlayBoard[c1]
+
+        else:
+            self.PlayBoard = defboard
+
+
+
 
     def ZIndex(self):
         return self.PlayBoard.index(0) +1 
@@ -66,7 +77,7 @@ class BlockPusher:
     def ValidMoves(self, ind = 1):
         Valids = []
         sel = self.ZIndex()
-        self.realwidth = self.width - 1
+        self.realheight = self.height - 1
         match (sel)%self.width:
             case 1:
                 # Left Edge
@@ -84,7 +95,7 @@ class BlockPusher:
             case 0:
                 # Top Edge
                 Valids.append(self.width+sel)
-            case self.realwidth:
+            case self.realheight:
                 # Bottom Edge
                 Valids.append(sel-self.width)
             case _:
@@ -119,8 +130,8 @@ class BlockPusher:
 
 def Widegame():
     board = BlockPusher(
-                        wid=6,hei=4,
-                        defboard="-r"
+                        wid=5,hei=5,
+                        defboard="-s:10000"
                         )
     
 
