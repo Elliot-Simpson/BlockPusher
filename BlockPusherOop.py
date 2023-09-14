@@ -114,30 +114,32 @@ class BlockPusher:
     def DisplayBoard(self):
         Blank = " "
         Seperator = "|"
+        printed = ""
         for i in range(self.height):
             for ii in range(self.width):
                 char = str(self[(i*self.width)+(ii+1)])
                 maxl = len(str(self.width*self.height))
                 if char == "0": char = " " 
                 
-                print( Blank*(maxl-len(char)) + char + Seperator   ,end="" )
+                printed += ( Blank*(maxl-len(char)) + char + Seperator)
                 if ii == self.width-1:
-                    print("\n",end="")
+                    printed += ("\n")
 
-        print()
+        printed += "\n"
+        print(printed)
 
 
 
 def Widegame():
     board = BlockPusher(
-                        wid=5,hei=5,
-                        defboard="-s:10000"
+                        wid=3,hei=3,
+                        defboard="-s:1000"
                         )
     
 
     board.DisplayBoard()
     while board.HasWon() == 0:
-        print(board.ValidMoves())
+        #print(board.ValidMoves())
         t = input("Move ")
         try:
             t= int(t)
